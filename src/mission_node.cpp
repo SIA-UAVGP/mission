@@ -103,7 +103,6 @@ int main(int argc, char **argv)
     }
 
     mission::CommandTOL landing_cmd;
-    landing_cmd.request.min_pitch = 1.0;
 
     ros::Time landing_last_request = ros::Time::now();
 
@@ -120,7 +119,7 @@ int main(int argc, char **argv)
         }
 
         // landing
-        if((current_pos_state == LAND) && (current_state.mode != "OFFBOARD")){                  
+        if((current_pos_state == LAND) && (current_state.mode == "OFFBOARD")){                  
             
             if( current_state.mode != "AUTO.LAND" &&
             (ros::Time::now() - landing_last_request > ros::Duration(5.0))){
