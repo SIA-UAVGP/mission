@@ -62,12 +62,7 @@ int main(int argc, char **argv)
     // ros::Publisher local_pos_pub = nh.advertise<geometry_msgs::PoseStamped>("mavros/setpoint_position/local", 10);
     local_pos_pub = nh.advertise<geometry_msgs::PoseStamped>("mavros/setpoint_position/local", 10);
 
-    // set pixhawk arm state and control mode(offboard) --> options
-    ros::ServiceClient arming_client = nh.serviceClient<mission::CommandBool>("mavros/cmd/arming");
-    ros::ServiceClient set_mode_client = nh.serviceClient<mission::SetMode>("mavros/set_mode");
-
-    // takeoff and land service 
-    // ros::ServiceClient takeoff_client = nh.serviceClient<mission::CommandTOL>("mavros/cmd/takeoff");
+    // land service 
     ros::ServiceClient land_client = nh.serviceClient<mission::CommandTOL>("mavros/cmd/land");
 
     // the setpoint publishing rate MUST be faster than 2Hz
@@ -107,20 +102,6 @@ int main(int argc, char **argv)
         rate.sleep();
     }
 
-    // takeoff and landing
-    // mission::CommandTOL takeoff_cmd;
-    // takeoff_cmd.request.min_pitch = -1.0;
-
-    // this part for simulation
-    mission::SetMode offb_set_mode;
-    offb_set_mode.request.custom_mode = "OFFBOARD";
-
-    mission::CommandBool arm_cmd;
-    arm_cmd.request.value = true;
-
-    ros::Time last_request = ros::Time::now();
-
-
     mission::CommandTOL landing_cmd;
     landing_cmd.request.min_pitch = 1.0;
 
@@ -128,29 +109,6 @@ int main(int argc, char **argv)
 
     while(ros::ok()){
 
-        // this part for simulation
-        // if(current_state.mode != "OFFBOARD" &&
-        //   (ros::Time::now() - last_request > ros::Duration(5.0)))
-        // {
-        //     if(set_mode_client.call(offb_set_mode) &&
-        //        offb_set_mode.response.success)
-        //     {
-        //         ROS_INFO("Offboard enabled");
-        //     }
-        //     last_request = ros::Time::now();
-        // } else 
-        // {
-        //     if(!current_state.armed &&      // if not armed
-        //       (ros::Time::now() - last_request > ros::Duration(5.0)))
-        //       {
-        //         if(arming_client.call(arm_cmd) &&
-        //            arm_cmd.response.success)
-        //         {
-        //             ROS_INFO("Vehicle armed");
-        //         }
-        //         last_request = ros::Time::now();
-        //     }
-        // }
 		if(!current_state.armed)
 		{
 			current_pos_state = POS_A;
