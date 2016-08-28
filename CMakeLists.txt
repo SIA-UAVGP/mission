@@ -12,8 +12,7 @@ find_package(catkin REQUIRED COMPONENTS
 )
 
 ## System dependencies are found with CMake's conventions
-# find_package(Boost REQUIRED COMPONENTS system)
-
+find_package(Boost REQUIRED COMPONENTS system)
 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
@@ -103,10 +102,10 @@ generate_messages(
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES mission
-#  CATKIN_DEPENDS roscpp std_msgs
-#  DEPENDS system_lib
+ INCLUDE_DIRS include
+ LIBRARIES mission
+ CATKIN_DEPENDS roscpp std_msgs geometry_msgs message_runtime
+ DEPENDS Boost system_lib
 )
 
 ###########
@@ -117,30 +116,38 @@ catkin_package(
 ## Your package locations should be listed before other locations
 # include_directories(include)
 include_directories(
+  include/mission
   ${catkin_INCLUDE_DIRS}
+  ${Boost_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
-# add_library(mission
-#   src/${PROJECT_NAME}/mission.cpp
-# )
+add_library(mission
+  src/mission/mission.cpp
+)
 
+target_link_libraries(mission
+  ${catkin_LIBRARIES}
+  ${Boost_LIBRARIES}
+)
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
-# add_dependencies(mission ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(mission mission_generate_messages_cpp)
 
 ## Declare a C++ executable
-# add_executable(mission_node src/mission_node.cpp)
+add_executable(mission_node src/mission_node.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
-# add_dependencies(mission_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(mission_node mission)
 
 ## Specify libraries to link a library or executable target against
-# target_link_libraries(mission_node
-#   ${catkin_LIBRARIES}
-# )
+target_link_libraries(mission_node
+  mission
+  ${catkin_LIBRARIES}
+  ${Boost_LIBRARIES}
+)
 
 #############
 ## Install ##
@@ -189,6 +196,3 @@ include_directories(
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
-add_executable(mission_node src/mission_node.cpp)
-add_dependencies(mission_node mission_generate_messages_cpp)
-target_link_libraries(mission_node ${catkin_LIBRARIES})
