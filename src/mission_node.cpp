@@ -1,4 +1,4 @@
-#include "mission.h"
+#include <mission/mission.h>
 
 int main(int argc, char **argv)
 {
