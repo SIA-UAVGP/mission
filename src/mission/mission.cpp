@@ -74,6 +74,17 @@ Mission::state_machine(void)
     pose_b.pose.position.x = 0;
     pose_b.pose.position.y = 5;
     pose_b.pose.position.z = 5;
+
+	Eigen::Quaterniond quat_yaw = mission::tf::quaternion_from_rpy(0.0, 0.0, 3.14 / 2);
+	pose_a.pose.orientation.x = quat_yaw.x();
+	pose_a.pose.orientation.y = quat_yaw.y();
+	pose_a.pose.orientation.z = quat_yaw.z();
+	pose_a.pose.orientation.w = quat_yaw.w();
+
+	pose_b.pose.orientation.x = quat_yaw.x();
+	pose_b.pose.orientation.y = quat_yaw.y();
+	pose_b.pose.orientation.z = quat_yaw.z();
+	pose_b.pose.orientation.w = quat_yaw.w();
     /***************** for test ***********************/
 
     switch(_main_state){

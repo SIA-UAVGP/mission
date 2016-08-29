@@ -8,6 +8,7 @@
 #pragma once
 
 #include <ros/ros.h>
+#include <mission/quat_euler.h>
 #include <math.h>
 #include <geometry_msgs/PoseStamped.h>
 #include <geometry_msgs/TwistStamped.h>

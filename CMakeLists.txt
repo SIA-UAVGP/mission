@@ -14,6 +14,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## System dependencies are found with CMake's conventions
 find_package(Boost REQUIRED COMPONENTS system)
 
+find_package(Eigen3)
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
 ## See http://ros.org/doc/api/catkin/html/user_guide/setup_dot_py.html
@@ -105,7 +106,7 @@ catkin_package(
  INCLUDE_DIRS include
  LIBRARIES mission
  CATKIN_DEPENDS roscpp std_msgs geometry_msgs message_runtime
- DEPENDS Boost system_lib
+ DEPENDS Boost Eigen system_lib
 )
 
 ###########
@@ -119,11 +120,13 @@ include_directories(
   include
   ${catkin_INCLUDE_DIRS}
   ${Boost_INCLUDE_DIRS}
+  ${EIGEN3_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
 add_library(mission
   src/mission/mission.cpp
+  src/mission/quat_euler.cpp
 )
 
 target_link_libraries(mission
