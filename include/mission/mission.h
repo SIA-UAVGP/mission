@@ -70,6 +70,9 @@ enum MAIN_STATE
 
 		 void cmd_streams(void);				// pixhawk need cmd streams, before switch to OFFBOARD mode
 
+		 void set_yaw_sp(geometry_msgs::PoseStamped *pose, const double yaw);		// set yaw setpoint
+		 void set_pos_sp(geometry_msgs::PoseStamped *pose, const double x, const double y, const double z);	// set position setpoint
+
 	 	 // Subscribers 
 		 ros::Subscriber _state_sub;			// get pixhawk's arming and status
 		 ros::Subscriber _cur_pos_sub;			// get pixhawk current local position

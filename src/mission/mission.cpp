@@ -68,23 +68,12 @@ Mission::state_machine(void)
     /***************** for test ***********************/
     geometry_msgs::PoseStamped pose_a;
     geometry_msgs::PoseStamped pose_b;
-    pose_a.pose.position.x = 0;
-    pose_a.pose.position.y = 0;
-    pose_a.pose.position.z = 5;
-    pose_b.pose.position.x = 0;
-    pose_b.pose.position.y = 5;
-    pose_b.pose.position.z = 5;
 
-	Eigen::Quaterniond quat_yaw = mission::tf::quaternion_from_rpy(0.0, 0.0, 3.14 / 2);
-	pose_a.pose.orientation.x = quat_yaw.x();
-	pose_a.pose.orientation.y = quat_yaw.y();
-	pose_a.pose.orientation.z = quat_yaw.z();
-	pose_a.pose.orientation.w = quat_yaw.w();
+	set_pos_sp(&pose_a, 0.0, 0.0, 3.0);
+	set_yaw_sp(&pose_a, 3.14);
 
-	pose_b.pose.orientation.x = quat_yaw.x();
-	pose_b.pose.orientation.y = quat_yaw.y();
-	pose_b.pose.orientation.z = quat_yaw.z();
-	pose_b.pose.orientation.w = quat_yaw.w();
+	set_pos_sp(&pose_b, 0.0, 3.0, 3.0);
+	set_yaw_sp(&pose_b, 3.14 /2);
     /***************** for test ***********************/
 
     switch(_main_state){
@@ -163,4 +152,24 @@ Mission::cmd_streams(void)
         ros::spinOnce();
         _rate.sleep();
     }
+}
+
+// set yaw setpoint -- unit: rad
+void
+Mission::set_yaw_sp(geometry_msgs::PoseStamped *pose, const double yaw)
+{
+	Eigen::Quaterniond quat_yaw =  mission::tf::quaternion_from_rpy(0.0, 0.0, yaw);
+	(*pose).pose.orientation.x = quat_yaw.x();
+	(*pose).pose.orientation.y = quat_yaw.y();
+	(*pose).pose.orientation.z = quat_yaw.z();
+	(*pose).pose.orientation.w = quat_yaw.w();
+}
+
+// set position setpoint -- unit: m
+void
+Mission::set_pos_sp(geometry_msgs::PoseStamped *pose, const double x, const double y, const double z)
+{
+	(*pose).pose.position.x = x;
+    (*pose).pose.position.y = y;
+    (*pose).pose.position.z = z;
 }
