@@ -38,6 +38,10 @@ Mission::mission_main(void)
     // services init
     _land_client = _node_handle.serviceClient<mission::CommandTOL>("mavros/cmd/land");
 
+	// dynamic reconfigure service init
+	_param_cfg = boost::bind(&Mission::params_cfg_cb, this, _1);
+	_param_server.setCallback(_param_cfg);
+
     // wait for FCU connection
     wait_connect();
 
@@ -69,11 +73,11 @@ Mission::state_machine(void)
     geometry_msgs::PoseStamped pose_a;
     geometry_msgs::PoseStamped pose_b;
 
-	set_pos_sp(&pose_a, 0.0, 0.0, 3.0);
-	set_yaw_sp(&pose_a, 3.14);
+	set_pos_sp(pose_a, 0.0, 0.0, 3.0);
+	set_yaw_sp(pose_a, 3.14);
 
-	set_pos_sp(&pose_b, 0.0, 3.0, 3.0);
-	set_yaw_sp(&pose_b, 3.14 /2);
+	set_pos_sp(pose_b, 0.0, 3.0, 3.0);
+	set_yaw_sp(pose_b, 3.14 /2);
     /***************** for test ***********************/
 
     switch(_main_state){
@@ -156,20 +160,28 @@ Mission::cmd_streams(void)
 
 // set yaw setpoint -- unit: rad
 void
-Mission::set_yaw_sp(geometry_msgs::PoseStamped *pose, const double yaw)
+Mission::set_yaw_sp(geometry_msgs::PoseStamped &pose, const double yaw)
 {
 	Eigen::Quaterniond quat_yaw =  mission::tf::quaternion_from_rpy(0.0, 0.0, yaw);
-	(*pose).pose.orientation.x = quat_yaw.x();
-	(*pose).pose.orientation.y = quat_yaw.y();
-	(*pose).pose.orientation.z = quat_yaw.z();
-	(*pose).pose.orientation.w = quat_yaw.w();
+	pose.pose.orientation.x = quat_yaw.x();
+	pose.pose.orientation.y = quat_yaw.y();
+	pose.pose.orientation.z = quat_yaw.z();
+	pose.pose.orientation.w = quat_yaw.w();
 }
 
 // set position setpoint -- unit: m
 void
-Mission::set_pos_sp(geometry_msgs::PoseStamped *pose, const double x, const double y, const double z)
+Mission::set_pos_sp(geometry_msgs::PoseStamped &pose, const double x, const double y, const double z)
 {
-	(*pose).pose.position.x = x;
-    (*pose).pose.position.y = y;
-    (*pose).pose.position.z = z;
+	pose.pose.position.x = x;
+    pose.pose.position.y = y;
+    pose.pose.position.z = z;
+}
+
+// dynamic reconfigure
+void
+Mission::params_cfg_cb(missionConfig &config)
+{
+	// display reconfigure msgs
+	ROS_INFO("local pos sp: %f", config.local_pos_sp);
 }

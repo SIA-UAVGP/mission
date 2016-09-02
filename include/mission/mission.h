@@ -14,6 +14,8 @@
 #include <geometry_msgs/TwistStamped.h>
 #include <mission/State.h>
 #include <mission/CommandTOL.h>
+#include <dynamic_reconfigure/server.h>
+#include <mission/missionConfig.h>
 
 namespace mission{
 
@@ -70,8 +72,11 @@ enum MAIN_STATE
 
 		 void cmd_streams(void);				// pixhawk need cmd streams, before switch to OFFBOARD mode
 
-		 void set_yaw_sp(geometry_msgs::PoseStamped *pose, const double yaw);		// set yaw setpoint
-		 void set_pos_sp(geometry_msgs::PoseStamped *pose, const double x, const double y, const double z);	// set position setpoint
+		 void set_yaw_sp(geometry_msgs::PoseStamped &pose, const double yaw);		// set yaw setpoint
+		 void set_pos_sp(geometry_msgs::PoseStamped &pose, const double x, const double y, const double z);	// set position setpoint
+
+		 // dynamic reconfigure
+		 void params_cfg_cb(missionConfig &config);
 
 	 	 // Subscribers 
 		 ros::Subscriber _state_sub;			// get pixhawk's arming and status
@@ -82,6 +87,10 @@ enum MAIN_STATE
 
 		 // Services
 		 ros::ServiceClient _land_client;		// land command
+
+		 // dynamic reconfigure
+		 dynamic_reconfigure::Server<missionConfig> _param_server;
+		 dynamic_reconfigure::Server<missionConfig>::CallbackType _param_cfg;
 
 		 mission::CommandTOL _landing_cmd;
 		 ros::Time _landing_last_request;

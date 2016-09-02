@@ -9,6 +9,7 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   geometry_msgs
   message_generation
+  dynamic_reconfigure
 )
 
 ## System dependencies are found with CMake's conventions
@@ -88,10 +89,9 @@ generate_messages(
 ##     and list every .cfg file to be processed
 
 ## Generate dynamic reconfigure parameters in the 'cfg' folder
-# generate_dynamic_reconfigure_options(
-#   cfg/DynReconf1.cfg
-#   cfg/DynReconf2.cfg
-# )
+generate_dynamic_reconfigure_options(
+  cfg/mission.cfg
+)
 
 ###################################
 ## catkin specific configuration ##
@@ -137,6 +137,7 @@ target_link_libraries(mission
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
 add_dependencies(mission mission_generate_messages_cpp)
+add_dependencies(mission mission_gencfg)
 
 ## Declare a C++ executable
 add_executable(mission_node src/mission_node.cpp)
