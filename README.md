@@ -34,7 +34,10 @@
   $ rosrun mavros mavsys mode -c OFFBOARD
 
   $ rosrun mavros mavsafety arm
-  
+
+# Set paramter
+  $ rosrun rqt_reconfigure rqt_reconfigure
+ 
 # Get the topic's messages
   $ rqt_graph
   
