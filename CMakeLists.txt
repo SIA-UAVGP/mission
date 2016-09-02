@@ -141,13 +141,21 @@ add_dependencies(mission mission_gencfg)
 
 ## Declare a C++ executable
 add_executable(mission_node src/mission_node.cpp)
+add_executable(vision_att_node src/vision_att_node.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 add_dependencies(mission_node mission)
+add_dependencies(vision_att_node mission)
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(mission_node
+  mission
+  ${catkin_LIBRARIES}
+  ${Boost_LIBRARIES}
+)
+
+target_link_libraries(vision_att_node
   mission
   ${catkin_LIBRARIES}
   ${Boost_LIBRARIES}
