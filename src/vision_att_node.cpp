@@ -10,6 +10,7 @@
 mission::Attitude att_msg;
 void att_cb(const mission::Attitude::ConstPtr& msg){
     att_msg = *msg;
+	ROS_INFO("Attitude roll: %f", att_msg.roll);
 	// TODO with att_msg
 }
 
