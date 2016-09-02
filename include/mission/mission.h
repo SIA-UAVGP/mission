@@ -47,6 +47,7 @@ enum MAIN_STATE
 struct params_s
 {
 	double local_alt_sp;
+	double yaw_sp;
 };
 
 /*
