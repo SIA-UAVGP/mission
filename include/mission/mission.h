@@ -41,6 +41,15 @@ enum MAIN_STATE
 };
 
 /*
+ * @brief	paramters structure
+ *
+ */
+struct params_s
+{
+	double local_alt_sp;
+};
+
+/*
  * @brief  state machine class
  *
  */
@@ -89,6 +98,7 @@ enum MAIN_STATE
 		 ros::ServiceClient _land_client;		// land command
 
 		 // dynamic reconfigure
+		 struct params_s _params;
 		 dynamic_reconfigure::Server<missionConfig> _param_server;
 		 dynamic_reconfigure::Server<missionConfig>::CallbackType _param_cfg;
 

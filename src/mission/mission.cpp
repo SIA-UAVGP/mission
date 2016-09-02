@@ -73,10 +73,10 @@ Mission::state_machine(void)
     geometry_msgs::PoseStamped pose_a;
     geometry_msgs::PoseStamped pose_b;
 
-	set_pos_sp(pose_a, 0.0, 0.0, 3.0);
+	set_pos_sp(pose_a, 0.0, 0.0, _params.local_alt_sp);
 	set_yaw_sp(pose_a, 3.14);
 
-	set_pos_sp(pose_b, 0.0, 3.0, 3.0);
+	set_pos_sp(pose_b, 0.0, 3.0, _params.local_alt_sp);
 	set_yaw_sp(pose_b, 3.14 /2);
     /***************** for test ***********************/
 
@@ -183,5 +183,6 @@ void
 Mission::params_cfg_cb(missionConfig &config)
 {
 	// display reconfigure msgs
-	ROS_INFO("local pos sp: %f", config.local_pos_sp);
+	_params.local_alt_sp = config.local_alt_sp;
+	ROS_INFO("local alt sp: %f", _params.local_alt_sp);
 }
