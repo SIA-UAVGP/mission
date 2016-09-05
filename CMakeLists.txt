@@ -50,6 +50,7 @@ add_message_files(
   FILES
   Attitude.msg
   State.msg
+  Mavros_test_msg.msg
 )
 
 ## Generate services in the 'srv' folder
@@ -141,13 +142,21 @@ add_dependencies(mission mission_gencfg)
 
 ## Declare a C++ executable
 add_executable(mission_node src/mission_node.cpp)
+add_executable(custom_msg_node src/custom_msg_node.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 add_dependencies(mission_node mission)
+add_dependencies(custom_msg_node mission)
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(mission_node
+  mission
+  ${catkin_LIBRARIES}
+  ${Boost_LIBRARIES}
+)
+
+target_link_libraries(custom_msg_node
   mission
   ${catkin_LIBRARIES}
   ${Boost_LIBRARIES}
