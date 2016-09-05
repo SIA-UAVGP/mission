@@ -27,7 +27,8 @@ int main(int argc, char **argv)
 
     ros::Subscriber state_sub = nh.subscribe<mission::State>("mavros/state", 10, state_cb);
 
-	ros::Subscriber test_msg_sub = nh.subscribe<mission::Mavros_test_msg>("mavros/mavros_test_msg", 10, mavros_msg_cb);
+	//ros::Subscriber test_msg_sub = nh.subscribe<mission::Mavros_test_msg>("mavros/mavros_test_msg", 10, mavros_msg_cb);
+	ros::Publisher  test_msg_pub = nh.advertise<mission::Mavros_test_msg>("mavros/mavros_test_msg", 10);
 
     //the setpoint publishing rate MUST be faster than 2Hz
     ros::Rate rate(20.0);
@@ -40,6 +41,9 @@ int main(int argc, char **argv)
     
     while(ros::ok()){
 
+		mission::Mavros_test_msg msg_test;
+		msg_test.test = 3;
+		test_msg_pub.publish(msg_test);
         ros::spinOnce();
         rate.sleep();
     }
