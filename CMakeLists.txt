@@ -51,6 +51,14 @@ add_message_files(
   Attitude.msg
   State.msg
   Mavros_test_msg.msg
+  FixedTargetPosition.msg
+  FixedTargetReturn.msg
+  ObstaclePosition.msg
+  TaskStatusChange.msg
+  TaskStatusMonitor.msg
+  VisionNumScan.msg
+  VisionOneNumGet.msg
+  YawSpCalculated.msg
 )
 
 ## Generate services in the 'srv' folder
