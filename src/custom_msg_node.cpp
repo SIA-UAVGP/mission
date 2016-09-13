@@ -9,6 +9,7 @@
 #include <mission/State.h>
 #include <mission/Mavros_test_msg.h>
 #include <mission/ObstaclePosition.h>
+#include <mission/FixedTargetPosition.h>
 
 mission::State current_state;
 void state_cb(const mission::State::ConstPtr& msg){
@@ -21,11 +22,11 @@ void mavros_msg_cb(const mission::Mavros_test_msg::ConstPtr& msg){
 	ROS_INFO("mavros_msg test: %f", msg_test.test);
 }
 
-// mission::ObstaclePosition obs_pos;
-// void obs_pos_cb(const mission::ObstaclePosition::ConstPtr& msg){
-// 	obs_pos = *msg;
-// 	ROS_INFO("obstacle position: %f", obs_pos.obstacle_x);
-// }
+mission::FixedTargetPosition fix_pos;
+void fix_target_pos_cb(const mission::FixedTargetPosition::ConstPtr& msg){
+	fix_pos = *msg;
+	ROS_INFO("fixed target position: %f", fix_pos.home_alt);
+}
 
 int main(int argc, char **argv)
 {
@@ -33,6 +34,7 @@ int main(int argc, char **argv)
     ros::NodeHandle nh;
 
     ros::Subscriber state_sub = nh.subscribe<mission::State>("mavros/state", 10, state_cb);
+	ros::Subscriber fix_pos_sub = nh.subscribe<mission::FixedTargetPosition>("mavros/fixed_target_position", 10, fix_target_pos_cb);
 
 	//ros::Subscriber test_msg_sub = nh.subscribe<mission::Mavros_test_msg>("mavros/mavros_test_msg", 10, mavros_msg_cb);
 	ros::Publisher  test_msg_pub = nh.advertise<mission::Mavros_test_msg>("mavros/mavros_test_msg", 10);
