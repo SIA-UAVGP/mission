@@ -1,3 +1,6 @@
+# Note
+  this package works with [huanglilong/mavros](https://github.com/huanglilong/mavros/commit/dfb3c4450e2395429f45efb6b6a6c82706351fb9)
+
 # How to build
   $ mkdir mission_ws/src
   
